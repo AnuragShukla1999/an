@@ -2,7 +2,7 @@
 import axios from "axios";
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
 
@@ -11,6 +11,9 @@ const SignUp = () => {
         password: ""
     });
 
+    const [loading, setLoading] = useState (false);
+
+    const navigate = useNavigate();
 
     const { email, password } = formData;
 
@@ -24,6 +27,7 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
             const res = await axios.post('http://localhost:8080/api/signup', {
@@ -35,6 +39,11 @@ const SignUp = () => {
             const resData = await res.json();
 
             setFormData(resData);
+
+            if (res.ok) {
+                setLoading(false);
+                navigate('/signin')
+            }
         } catch (error) {
             console.log(error);
         }
@@ -67,7 +76,9 @@ const SignUp = () => {
             </div>
 
             <button type="submit" style={{ backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                Sign Up
+                {
+                    loading ? "Loading ...." : "Sign Up"
+                }
             </button>
 
             <Link to="/signin">

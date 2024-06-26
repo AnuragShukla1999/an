@@ -10,12 +10,10 @@ dotenv.config();
 const app = express();
 
 
-dbConnection();
 
+// middleware
 app.use(cors());
-
 app.use(cookieParser);
-
 app.use(express.json());
 
 app.get("/hi", (req, res) => {
@@ -28,3 +26,6 @@ app.use("/api", router)
 app.listen(process.env.PORT, () => {
     console.log("server is running at", process.env.PORT)
 })
+
+
+dbConnection();

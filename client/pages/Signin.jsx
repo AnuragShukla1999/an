@@ -1,12 +1,53 @@
 // eslint-disable-next-line no-unused-vars
+import axios from "axios";
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const SignIn = () => {
 
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
+
+    const navigate = useNavigate();
+
+    const { email, password } = formData;
+
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value.trim() });
+
+        console.log(e.target.value);
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const res = await axios.post('http://localhost:8080/api/signin', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+
+            const resData = await res.json();
+
+            setFormData(resData);
+
+            if (res.ok) {
+                navigate("/")
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '400px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '10px', backgroundColor: '#f9f9f9', marginTop: '50px' }} >
+        <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', maxWidth: '400px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '10px', backgroundColor: '#f9f9f9', marginTop: '50px' }} onSubmit={handleSubmit} >
             <div style={{ width: '100%', marginBottom: '15px' }}>
                 <label htmlFor="email" style={{ display: 'block', marginBottom: '5px', color: '#333', fontWeight: 'bold' }}>Email</label>
                 <input
@@ -14,6 +55,8 @@ const SignIn = () => {
                     name="email"
                     placeholder="enter email"
                     style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc', boxSizing: 'border-box' }}
+                    value={email}
+                    onChange={handleChange}
                 />
             </div>
 
@@ -24,6 +67,8 @@ const SignIn = () => {
                     name="password"
                     placeholder="enter password"
                     style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc', boxSizing: 'border-box' }}
+                    value={password}
+                    onChange={handleChange}
                 />
             </div>
 
