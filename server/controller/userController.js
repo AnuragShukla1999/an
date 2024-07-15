@@ -62,3 +62,17 @@ export const SignIn = async (req, res) => {
 
 
 
+
+export const logout = async (req, res) => {
+    try {
+        res.clearCookie('access_token');
+
+        res.json({
+            message: "Logout Successfully"
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+}
