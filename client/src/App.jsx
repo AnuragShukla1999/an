@@ -1,6 +1,6 @@
-import Home from '../pages/Home';
-import SignIn from '../pages/Signin';
-import SignUp from '../pages/Signup';
+import Home from './pages/Home';
+import SignIn from './pages/Signin';
+import SignUp from './pages/Signup';
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
